@@ -145,6 +145,15 @@ def register_minigrid_envs():
         kwargs={"size": 16, "n_obstacles": 8},
     )
 
+    # Empty Goal
+    # ----------------------------------------
+
+    register(
+        id="MiniGrid-GoalEmpty-7x7-v0",
+        entry_point="minigrid.envs:GoalEmptyEnv",
+        kwargs={"size": 7},
+    )
+
     # Empty
     # ----------------------------------------
 
@@ -164,6 +173,12 @@ def register_minigrid_envs():
         id="MiniGrid-Empty-6x6-v0",
         entry_point="minigrid.envs:EmptyEnv",
         kwargs={"size": 6},
+    )
+
+    register(
+        id="MiniGrid-Empty-7x7-v0",
+        entry_point="minigrid.envs:EmptyEnv",
+        kwargs={"size": 7},
     )
 
     register(

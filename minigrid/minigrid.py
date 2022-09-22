@@ -98,10 +98,10 @@ class MissionSpace(spaces.Space[str]):
     """
 
     def __init__(
-        self,
-        mission_func: Callable[..., str],
-        ordered_placeholders: Optional["list[list[str]]"] = None,
-        seed: Optional[Union[int, seeding.RandomNumberGenerator]] = None,
+            self,
+            mission_func: Callable[..., str],
+            ordered_placeholders: Optional["list[list[str]]"] = None,
+            seed: Optional[Union[int, seeding.RandomNumberGenerator]] = None,
     ):
         r"""Constructor of :class:`MissionSpace` space.
 
@@ -113,7 +113,7 @@ class MissionSpace(spaces.Space[str]):
         # Check that the ordered placeholders and mission function are well defined.
         if ordered_placeholders is not None:
             assert (
-                len(ordered_placeholders) == mission_func.__code__.co_argcount
+                    len(ordered_placeholders) == mission_func.__code__.co_argcount
             ), f"The number of placeholders {len(ordered_placeholders)} is different from the number of parameters in the mission function {mission_func.__code__.co_argcount}."
             for placeholder_list in ordered_placeholders:
                 assert check_if_no_duplicate(
@@ -121,7 +121,7 @@ class MissionSpace(spaces.Space[str]):
                 ), "Make sure that the placeholders don't have any duplicate values."
         else:
             assert (
-                mission_func.__code__.co_argcount == 0
+                    mission_func.__code__.co_argcount == 0
             ), f"If the ordered placeholders are {ordered_placeholders}, the mission function shouldn't have any parameters."
 
         self.ordered_placeholders = ordered_placeholders
@@ -190,11 +190,11 @@ class MissionSpace(spaces.Space[str]):
             for i, placeholder_1 in enumerate(ordered_placeholder_list):
                 starting_id = i + 1
                 for j, placeholder_2 in enumerate(
-                    ordered_placeholder_list[starting_id:]
+                        ordered_placeholder_list[starting_id:]
                 ):
                     # Check if place holder ids overlap and keep the longest
                     if max(placeholder_1[0], placeholder_2[0]) < min(
-                        placeholder_1[1], placeholder_2[1]
+                            placeholder_1[1], placeholder_2[1]
                     ):
                         remove_placeholder = min(
                             placeholder_1[2], placeholder_2[2], key=len
@@ -212,7 +212,7 @@ class MissionSpace(spaces.Space[str]):
 
             # Check that the identified final placeholders are in the same order as the original placeholders.
             for orered_placeholder, final_placeholder in zip(
-                self.ordered_placeholders, final_placeholders
+                    self.ordered_placeholders, final_placeholders
             ):
                 if final_placeholder in orered_placeholder:
                     continue
@@ -245,10 +245,10 @@ class MissionSpace(spaces.Space[str]):
             if self.ordered_placeholders is not None:
                 # Check length
                 if (len(self.order_placeholder) == len(other.order_placeholder)) and (
-                    all(
-                        set(i) == set(j)
-                        for i, j in zip(self.order_placeholder, other.order_placeholder)
-                    )
+                        all(
+                            set(i) == set(j)
+                            for i, j in zip(self.order_placeholder, other.order_placeholder)
+                        )
                 ):
                     # Check mission string is the same with dummy space placeholders
                     test_placeholders = [""] * len(self.order_placeholder)
@@ -259,7 +259,6 @@ class MissionSpace(spaces.Space[str]):
 
                 # Check that other is also None
                 if other.ordered_placeholders is None:
-
                     # Check mission string is the same
                     mission = self.mission_func()
                     other_mission = other.mission_func()
@@ -354,6 +353,17 @@ class WorldObj:
 class Goal(WorldObj):
     def __init__(self):
         super().__init__("goal", "green")
+
+    def can_overlap(self):
+        return True
+
+    def render(self, img):
+        fill_coords(img, point_in_rect(0, 1, 0, 1), COLORS[self.color])
+
+
+class PretendedGoal(WorldObj):
+    def __init__(self):
+        super().__init__("goal", "red")
 
     def can_overlap(self):
         return True
@@ -648,7 +658,7 @@ class Grid:
 
     @classmethod
     def render_tile(
-        cls, obj, agent_dir=None, highlight=False, tile_size=TILE_PIXELS, subdivs=3
+            cls, obj, agent_dir=None, highlight=False, tile_size=TILE_PIXELS, subdivs=3
     ):
         """
         Render a tile and cache the result
@@ -846,18 +856,18 @@ class MiniGridEnv(gym.Env):
         done = 6
 
     def __init__(
-        self,
-        mission_space: MissionSpace,
-        grid_size: int = None,
-        width: int = None,
-        height: int = None,
-        max_steps: int = 100,
-        see_through_walls: bool = False,
-        agent_view_size: int = 7,
-        render_mode: Optional[str] = None,
-        highlight: bool = True,
-        tile_size: int = TILE_PIXELS,
-        agent_pov: bool = False,
+            self,
+            mission_space: MissionSpace,
+            grid_size: int = None,
+            width: int = None,
+            height: int = None,
+            max_steps: int = 100,
+            see_through_walls: bool = False,
+            agent_view_size: int = 7,
+            render_mode: Optional[str] = None,
+            highlight: bool = True,
+            tile_size: int = TILE_PIXELS,
+            agent_pov: bool = False,
     ):
         # Initialize mission
         self.mission = mission_space.sample()
@@ -1458,9 +1468,9 @@ class MiniGridEnv(gym.Env):
         f_vec = self.dir_vec
         r_vec = self.right_vec
         top_left = (
-            self.agent_pos
-            + f_vec * (self.agent_view_size - 1)
-            - r_vec * (self.agent_view_size // 2)
+                self.agent_pos
+                + f_vec * (self.agent_view_size - 1)
+                - r_vec * (self.agent_view_size // 2)
         )
 
         # Mask of which cells to highlight
@@ -1495,10 +1505,10 @@ class MiniGridEnv(gym.Env):
         return img
 
     def get_frame(
-        self,
-        highlight: bool = True,
-        tile_size: int = TILE_PIXELS,
-        agent_pov: bool = False,
+            self,
+            highlight: bool = True,
+            tile_size: int = TILE_PIXELS,
+            agent_pov: bool = False,
     ):
         """Returns an RGB image corresponding to the whole environment or the agent's point of view.
 
