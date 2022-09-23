@@ -76,6 +76,7 @@ class GoalEmptyEnv(MiniGridEnv):
             see_through_walls=True,
             **kwargs
         )
+        self.reward_range = (-1, 0)
 
     def _gen_grid(self, width, height):
         # Create an empty grid
